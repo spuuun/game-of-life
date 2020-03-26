@@ -54,20 +54,8 @@ namespace GameOfLifeConsole
             // evaluate living/dead for next generation - add the result to NextGeneration
             screen.Generation.ForEach(row =>
             {
-
                 row.ForEach(cell =>
                 {
-
-                    // var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
-                    // var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
-                    // var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
-                    // var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
-                    // var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
-                    // var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
-                    // var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
-                    // var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
-
-
                     if (cell.X == 0)
                     {
                         // x corner cases

@@ -43,5 +43,10 @@ namespace GameOfLifeConsole
                 isAlive = true;
             }
         }
+        public void ClearNeighbors()
+        {
+            // need to clear number of living neighbors before  next gen.
+
+        }
     }
 }
