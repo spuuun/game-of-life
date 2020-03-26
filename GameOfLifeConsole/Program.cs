@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameOfLifeConsole
 {
@@ -8,16 +9,40 @@ namespace GameOfLifeConsole
 
         static void Main(string[] args)
         {
-            Console.Clear();
-            PrintLine();
-            PrintRow("Column 1", "Column 2", "Column 3", "Column 4");
-            PrintLine();
-            PrintRow("", "", "", "");
-            PrintRow("", "", "", "");
-            PrintLine();
-            Console.ReadLine();
+            RenderGrid();
+            // Console.Clear();
+            // PrintLine();
+            // PrintRow("Column 1", "Column 2", "Column 3", "Column 4");
+            // PrintLine();
+            // PrintRow("", "", "", "");
+            // PrintRow("", "", "", "");
+            // PrintLine();
+            // Console.ReadLine();
         }
 
+        public static void RenderGrid()
+        {
+            // render grid of living and dead cells
+            var screen0 = new List<List<Cell>>();
+            var Width = 35;
+            var Height = 35;
+
+
+            for (var y = 0; y < Height; y++)
+            {
+                var sublist = new List<Cell>();
+                for (var x = 0; x < Width; x++)
+                {
+                    var newCell = new Cell(x, y)
+                    {
+                        Y = y,
+                        X = x
+                    };
+                    sublist.Add(newCell);
+                }
+                screen0.Add(sublist);
+            }
+        }
         static void PrintLine()
         {
             Console.WriteLine(new string('-', tableWidth));
