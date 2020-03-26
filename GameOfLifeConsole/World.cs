@@ -11,25 +11,26 @@ namespace GameOfLifeConsole
         public void RenderGrid()
         {
             // render grid of living and dead cells
-            var screen0 = new List<List<Cell>>();
-            var Width = 35;
-            var Height = 35;
+
+            // var screen0 = new List<List<Cell>>();
+            // var Width = 35;
+            // var Height = 35;
 
 
-            for (var y = 0; y < Height; y++)
-            {
-                var sublist = new List<Cell>();
-                for (var x = 0; x < Width; x++)
-                {
-                    var newCell = new Cell(x, y)
-                    {
-                        Y = y,
-                        X = x
-                    };
-                    sublist.Add(newCell);
-                }
-                screen0.Add(sublist);
-            }
+            // for (var y = 0; y < Height; y++)
+            // {
+            //     var sublist = new List<Cell>();
+            //     for (var x = 0; x < Width; x++)
+            //     {
+            //         var newCell = new Cell(x, y)
+            //         {
+            //             Y = y,
+            //             X = x
+            //         };
+            //         sublist.Add(newCell);
+            //     }
+            //     screen0.Add(sublist);
+            // }
         }
 
         public void Seed()
@@ -49,14 +50,59 @@ namespace GameOfLifeConsole
             // stop iterating generations
         }
 
-        public Screen Tick(Screen currentGeneration)
+        public Screen Tick(Screen screen)
         {
-            var NextGeneration = new Screen();
 
             // iterate over every cell in currentGeneration
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+
+                    if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                    {
+                        cell.LivingNeighbors++;
+                    }
+                });
+            });
+
             // evaluate living/dead for next generation - add the result to NextGeneration
 
-            return NextGeneration;
+            return screen;
         }
     }
 }
