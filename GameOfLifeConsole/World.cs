@@ -8,8 +8,22 @@ namespace GameOfLifeConsole
     public class World
     {
         // METHODS:
-        public void RenderGrid()
+        public void RenderGrid(Screen screen)
         {
+            string bars = new String('-', screen.Width * 2);
+            Console.WriteLine(bars);
+
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    Console.Write(cell.PrintedValue);
+                });
+
+                Console.WriteLine("|");
+            });
+
+            Console.WriteLine(bars);
             // render grid of living and dead cells
 
             // var screen0 = new List<List<Cell>>();
@@ -50,14 +64,20 @@ namespace GameOfLifeConsole
             // stop iterating generations
         }
 
-        public Screen Tick(Screen screen)
+        public void Tick(Screen screen)
         {
-
             // iterate over every cell in currentGeneration
+            // evaluate living/dead for next generation - add the result to NextGeneration
             screen.Generation.ForEach(row =>
             {
                 row.ForEach(cell =>
                 {
+                    // corner cases
+                    // edge cases
+
+
+
+
                     if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
                     {
                         cell.LivingNeighbors++;
@@ -97,12 +117,11 @@ namespace GameOfLifeConsole
                     {
                         cell.LivingNeighbors++;
                     }
+                    cell.Tick();
                 });
             });
 
-            // evaluate living/dead for next generation - add the result to NextGeneration
-
-            return screen;
+            RenderGrid(screen);
         }
     }
 }

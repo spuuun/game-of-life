@@ -42,7 +42,6 @@ namespace GameOfLifeConsole
         public bool GetRandomBool()
         {
             var random = new Random().Next(2);
-            Console.WriteLine(random);
             bool randomBool;
 
             if (random == 0)
