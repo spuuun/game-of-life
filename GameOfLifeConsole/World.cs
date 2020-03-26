@@ -17,7 +17,8 @@ namespace GameOfLifeConsole
             {
                 row.ForEach(cell =>
                 {
-                    Console.Write(cell.PrintedValue);
+                    // Console.Write(cell.PrintedValue);
+                    Console.Write($"| {cell.PrintedValue}, ln:{cell.LivingNeighbors} ");
                 });
 
                 Console.WriteLine("|");
@@ -47,31 +48,26 @@ namespace GameOfLifeConsole
             // }
         }
 
-        public void Seed()
-        {
-            // alter state of initial grid based on user interaction - i.e. toggle cells isAlive property onClick
-            // STRETCH GOAL: allow user to change grid size
-
-        }
-
-        public void Start()
-        {
-            // start iterating generations
-        }
-
-        public void Stop()
-        {
-            // stop iterating generations
-        }
-
         public void Tick(Screen screen)
         {
             // iterate over every cell in currentGeneration
             // evaluate living/dead for next generation - add the result to NextGeneration
             screen.Generation.ForEach(row =>
             {
+
                 row.ForEach(cell =>
                 {
+
+                    // var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
+                    // var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
+                    // var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
+                    // var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
+                    // var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
+                    // var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
+                    // var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
+                    // var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
+
+
                     if (cell.X == 0)
                     {
                         // x corner cases
@@ -81,6 +77,7 @@ namespace GameOfLifeConsole
                             {
                                 cell.LivingNeighbors++;
                             }
+
                             if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
                             {
                                 cell.LivingNeighbors++;
@@ -108,11 +105,35 @@ namespace GameOfLifeConsole
                         // x edgecases
                         else
                         {
-                            // look:
-                            // up, up-right, right, down-right, down
+                            var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
+                            var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
+                            var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
+                            var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
+                            var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
+                            if (up)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (upRight)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (downRight)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (down)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (right)
+                            {
+                                cell.LivingNeighbors++;
+                            }
                         }
 
                     }
+                    // corner cases
                     else if (cell.X == screen.Width - 1)
                     {
                         if (cell.Y == 0)
@@ -145,24 +166,93 @@ namespace GameOfLifeConsole
                                 cell.LivingNeighbors++;
                             }
                         }
+                        // edge cases
                         else
                         {
-                            // look:
-                            // down, down-left, left, up-left, up
+                            var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
+                            var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
+                            var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
+                            var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
+                            var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
+                            if (down)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (downLeft)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (left)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (upLeft)
+                            {
+                                cell.LivingNeighbors++;
+                            }
+                            if (up)
+                            {
+                                cell.LivingNeighbors++;
+                            }
                         }
                     }
-
                     // remaining y edge cases
                     else if (cell.Y == 0)
                     {
-                        // look:
-                        // left, left-down, down, right-down, right
+                        var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
+                        var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
+                        var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
+                        var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
+                        var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
+                        if (left)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (downLeft)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (down)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (downRight)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (right)
+                        {
+                            cell.LivingNeighbors++;
+                        }
                     }
 
                     else if (cell.Y == screen.Height - 1)
                     {
-                        // look:
-                        // left, left-up, up, right-up, right
+                        var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
+                        var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
+                        var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
+                        var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
+                        var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
+                        if (left)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (upLeft)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (up)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (upRight)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (right)
+                        {
+                            cell.LivingNeighbors++;
+                        }
                     }
 
                     // REGULAR CASES
@@ -216,5 +306,16 @@ namespace GameOfLifeConsole
 
             RenderGrid(screen);
         }
+
+
+
+        public void Seed()
+        {
+            // alter state of initial grid based on user interaction - i.e. toggle cells isAlive property onClick
+            // STRETCH GOAL: allow user to change grid size
+
+        }
+
+
     }
 }

@@ -11,7 +11,6 @@ namespace GameOfLifeConsole
         {
             World world = new World();
             Screen screen = new Screen(10, 10);
-            Console.Clear();
             world.RenderGrid(screen);
             world.Tick(screen);
             world.Tick(screen);
