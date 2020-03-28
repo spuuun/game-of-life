@@ -12,8 +12,6 @@ namespace GameOfLifeConsole
         public List<List<Cell>> Generation { get; set; } = new List<List<Cell>>();
         public int LivingNeighbors { get; set; }
 
-
-
         public Screen(int x, int y)
         {
             Width = x;
@@ -35,9 +33,6 @@ namespace GameOfLifeConsole
                 this.Generation.Add(sublist);
             }
         }
-
-
-
 
         public bool GetRandomBool()
         {
