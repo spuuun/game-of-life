@@ -30,6 +30,7 @@ namespace GameOfLifeConsole
         {
             X = x;
             Y = y;
+            LivingNeighbors = 0;
         }
 
         public void Tick()
@@ -45,8 +46,8 @@ namespace GameOfLifeConsole
         }
         public void ClearNeighbors()
         {
-            // need to clear number of living neighbors before  next gen.
-
+            // clear number of living neighbors before next gen.
+            LivingNeighbors = 0;
         }
     }
 }
