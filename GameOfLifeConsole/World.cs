@@ -7,51 +7,35 @@ namespace GameOfLifeConsole
 {
     public class World
     {
-        // METHODS:
-        public void RenderGrid(Screen screen)
+        // PROPERTIES:
+        public List<Screen> History { get; set; }
+
+        // CONSTRUCTOR:
+        public World()
         {
-            string bars = new String('-', screen.Width * 2);
-            Console.WriteLine(bars);
-
-            screen.Generation.ForEach(row =>
-            {
-                row.ForEach(cell =>
-                {
-                    // Console.Write(cell.PrintedValue);
-                    Console.Write($"| {cell.PrintedValue}, ln:{cell.LivingNeighbors} ");
-                });
-
-                Console.WriteLine("|");
-            });
-
-            Console.WriteLine(bars);
-            // render grid of living and dead cells
-
-            // var screen0 = new List<List<Cell>>();
-            // var Width = 35;
-            // var Height = 35;
-
-
-            // for (var y = 0; y < Height; y++)
-            // {
-            //     var sublist = new List<Cell>();
-            //     for (var x = 0; x < Width; x++)
-            //     {
-            //         var newCell = new Cell(x, y)
-            //         {
-            //             Y = y,
-            //             X = x
-            //         };
-            //         sublist.Add(newCell);
-            //     }
-            //     screen0.Add(sublist);
-            // }
+            History = new List<Screen>();
         }
 
-        public void Tick(Screen screen)
+        public Screen Iterate(Screen seed)
         {
-            // iterate over every cell in currentGeneration
-            // evaluate living/dead for next generation - add the result to NextGeneration
+            seed.RenderGrid();
+
+
+
+            var newSeed = Tick(seed);
+            return newSeed;
+        }
+
+        // METHODS:
+
+        public Screen Tick(Screen screen)
+        {
+            // add screen to history before altering it
+            History.Add(screen);
+
+            Console.WriteLine("render BEFORE living neighbors eval");
+            screen.RenderGrid();
+            // iterate over every cell in currentGeneration - conditionally modify cell's LivingNeighbors property
             screen.Generation.ForEach(row =>
             {
                 row.ForEach(cell =>
@@ -286,24 +270,38 @@ namespace GameOfLifeConsole
                             cell.LivingNeighbors++;
                         }
                     }
-
-                    cell.Tick();
-
                 });
             });
+            Console.WriteLine("render AFTER living neighbors eval");
+            screen.RenderGrid();
 
-            RenderGrid(screen);
+            var tickedCells = DoCellTick(screen);
+            var newSeed = clearAllCells(tickedCells);
+            return newSeed;
         }
 
-
-
-        public void Seed()
+        public Screen DoCellTick(Screen screen)
         {
-            // alter state of initial grid based on user interaction - i.e. toggle cells isAlive property onClick
-            // STRETCH GOAL: allow user to change grid size
-
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    cell.Tick();
+                });
+            });
+            return screen;
         }
 
-
+        public Screen clearAllCells(Screen screen)
+        {
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    cell.ClearNeighbors();
+                });
+            });
+            return screen;
+        }
     }
 }
