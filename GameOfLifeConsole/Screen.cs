@@ -50,6 +50,26 @@ namespace GameOfLifeConsole
 
             return randomBool;
         }
+
+        public void RenderGrid()
+        {
+            // render grid of living and dead cells
+            string bars = new String('-', this.Width * 2);
+            Console.WriteLine(bars);
+
+            this.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    Console.Write($"{cell.PrintedValue}/{cell.LivingNeighbors}");
+                    // Console.Write($"({cell.X},{cell.Y})");
+                });
+                Console.WriteLine("|");
+            });
+
+            Console.WriteLine(bars);
+        }
+
     }
 
 }

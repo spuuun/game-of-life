@@ -7,250 +7,203 @@ namespace GameOfLifeConsole
 {
     public class World
     {
-        // METHODS:
-        public void RenderGrid(Screen screen)
+        // PROPERTIES:
+        public List<Screen> History { get; set; }
+
+        // CONSTRUCTOR:
+        public World()
         {
-            string bars = new String('-', screen.Width * 2);
-            Console.WriteLine(bars);
-
-            screen.Generation.ForEach(row =>
-            {
-                row.ForEach(cell =>
-                {
-                    // Console.Write(cell.PrintedValue);
-                    Console.Write($"| {cell.PrintedValue}, ln:{cell.LivingNeighbors} ");
-                });
-
-                Console.WriteLine("|");
-            });
-
-            Console.WriteLine(bars);
-            // render grid of living and dead cells
-
-            // var screen0 = new List<List<Cell>>();
-            // var Width = 35;
-            // var Height = 35;
-
-
-            // for (var y = 0; y < Height; y++)
-            // {
-            //     var sublist = new List<Cell>();
-            //     for (var x = 0; x < Width; x++)
-            //     {
-            //         var newCell = new Cell(x, y)
-            //         {
-            //             Y = y,
-            //             X = x
-            //         };
-            //         sublist.Add(newCell);
-            //     }
-            //     screen0.Add(sublist);
-            // }
+            History = new List<Screen>();
         }
 
-        public void Tick(Screen screen)
+        public Screen Iterate(Screen seed)
         {
-            // iterate over every cell in currentGeneration
-            // evaluate living/dead for next generation - add the result to NextGeneration
+            seed.RenderGrid();
+            var newSeed = Tick(seed);
+            return newSeed;
+        }
+
+        // METHODS:
+        public Screen Tick(Screen screen)
+        {
+            // add screen to history before altering it
+            History.Add(screen);
+
+            Console.WriteLine("render BEFORE living neighbors eval");
+            screen.RenderGrid();
+            // iterate over every cell in currentGeneration - conditionally modify cell's LivingNeighbors property
             screen.Generation.ForEach(row =>
             {
                 row.ForEach(cell =>
                 {
-                    if (cell.X == 0)
+                    if (cell.X == 0 && cell.Y == 0)
                     {
                         // x corner cases
-                        if (cell.Y == 0)
+                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
                         {
-                            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-
-                            if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                        }
-                        else if (cell.Y == screen.Height - 1)
-                        {
-                            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                        }
-                        // x edgecases
-                        else
-                        {
-                            var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
-                            var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
-                            var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
-                            var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
-                            var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
-                            if (up)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (upRight)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (downRight)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (down)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (right)
-                            {
-                                cell.LivingNeighbors++;
-                            }
+                            cell.LivingNeighbors++;
                         }
 
-                    }
-                    // corner cases
-                    else if (cell.X == screen.Width - 1)
-                    {
-                        if (cell.Y == 0)
+                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
                         {
-                            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
+                            cell.LivingNeighbors++;
                         }
-                        else if (cell.Y == screen.Height - 1)
+                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
                         {
-                            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                        }
-                        // edge cases
-                        else
-                        {
-                            var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
-                            var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
-                            var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
-                            var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
-                            var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
-                            if (down)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (downLeft)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (left)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (upLeft)
-                            {
-                                cell.LivingNeighbors++;
-                            }
-                            if (up)
-                            {
-                                cell.LivingNeighbors++;
-                            }
+                            cell.LivingNeighbors++;
                         }
                     }
-                    // remaining y edge cases
-                    else if (cell.Y == 0)
+
+                    else if (cell.X == 0 && cell.Y == screen.Height - 1)
                     {
-                        var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
-                        var downRight = screen.Generation[cell.X + 1][cell.Y + 1].isAlive;
-                        var down = screen.Generation[cell.X][cell.Y + 1].isAlive;
-                        var downLeft = screen.Generation[cell.X - 1][cell.Y + 1].isAlive;
-                        var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
-                        if (left)
+                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (downLeft)
+                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (down)
+                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (downRight)
+                    }
+                    // x edgecases
+                    else if (cell.X == 0 && (cell.Y > 0 && cell.Y < screen.Height - 1))
+                    {
+                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (right)
+                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
                     }
-
-                    else if (cell.Y == screen.Height - 1)
+                    // corner cases
+                    else if (cell.X == screen.Width - 1 && cell.Y == 0)
                     {
-                        var up = screen.Generation[cell.X][cell.Y - 1].isAlive;
-                        var upRight = screen.Generation[cell.X + 1][cell.Y - 1].isAlive;
-                        var right = screen.Generation[cell.X + 1][cell.Y].isAlive;
-                        var left = screen.Generation[cell.X - 1][cell.Y].isAlive;
-                        var upLeft = screen.Generation[cell.X - 1][cell.Y - 1].isAlive;
-                        if (left)
+                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (upLeft)
+                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
-                        if (up)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (upRight)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (right)
+                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
                     }
-
-                    // REGULAR CASES
-                    else
+                    else if (cell.X == screen.Width - 1 && cell.Y == screen.Height - 1)
                     {
+                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
                         if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
                         {
                             cell.LivingNeighbors++;
                         }
+                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                    }
+                    // edge cases
+                    else if (cell.X == screen.Width - 1 && (cell.Y > 0 && cell.Y < screen.Height - 1))
+                    {
+                        //up
+                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        //upLeft
+                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        //left
+                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        //downLeft
+                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        //down
+                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                    }
+                    // remaining y edge cases
+                    else if (cell.Y == 0 && (cell.X > 0 && cell.X < screen.Width - 1))
+                    {
+                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                    }
 
+                    else if (cell.Y == screen.Height - 1 && (cell.X > 0 && cell.X < screen.Width - 1))
+                    {
+                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
+                    }
+                    // REGULAR CASES
+                    else
+                    {
                         if (screen.Generation[cell.X][cell.Y - 1].isAlive)
                         {
                             cell.LivingNeighbors++;
@@ -285,25 +238,49 @@ namespace GameOfLifeConsole
                         {
                             cell.LivingNeighbors++;
                         }
+
+                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+                        {
+                            cell.LivingNeighbors++;
+                        }
                     }
-
-                    cell.Tick();
-
                 });
             });
 
-            RenderGrid(screen);
+
+
+            Console.WriteLine("render AFTER living neighbors eval");
+            screen.RenderGrid();
+
+            var tickedCells = DoCellTick(screen);
+            Console.WriteLine("render AFTER calling cell.tick on each cell");
+            tickedCells.RenderGrid();
+            // var newSeed = clearAllCells(tickedCells);
+            return tickedCells;
         }
 
-
-
-        public void Seed()
+        public Screen DoCellTick(Screen screen)
         {
-            // alter state of initial grid based on user interaction - i.e. toggle cells isAlive property onClick
-            // STRETCH GOAL: allow user to change grid size
-
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    cell.Tick();
+                });
+            });
+            return screen;
         }
 
-
+        public Screen clearAllCells(Screen screen)
+        {
+            screen.Generation.ForEach(row =>
+            {
+                row.ForEach(cell =>
+                {
+                    cell.ClearNeighbors();
+                });
+            });
+            return screen;
+        }
     }
 }
