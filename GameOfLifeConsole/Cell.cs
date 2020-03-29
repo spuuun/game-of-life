@@ -17,11 +17,11 @@ namespace GameOfLifeConsole
             {
                 if (isAlive)
                 {
-                    return "|0";
+                    return "|1";
                 }
                 else
                 {
-                    return "| ";
+                    return "|0";
                 };
             }
         }
