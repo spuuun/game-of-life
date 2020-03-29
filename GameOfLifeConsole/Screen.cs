@@ -61,8 +61,8 @@ namespace GameOfLifeConsole
             {
                 row.ForEach(cell =>
                 {
-                    Console.Write($"{cell.PrintedValue}///{cell.LivingNeighbors}");
-                    // Console.Write($"| {cell.PrintedValue}, ln:{cell.LivingNeighbors} ");
+                    Console.Write($"{cell.PrintedValue}/{cell.LivingNeighbors}");
+                    // Console.Write($"({cell.X},{cell.Y})");
                 });
                 Console.WriteLine("|");
             });

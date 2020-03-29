@@ -16,7 +16,7 @@ namespace GameOfLifeConsole
 
             World world = new World();
 
-            seed.RenderGrid();
+            // seed.RenderGrid();
 
             Screen newSeed = world.Iterate(seed);
 
