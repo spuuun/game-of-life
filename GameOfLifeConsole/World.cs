@@ -19,9 +19,6 @@ namespace GameOfLifeConsole
         public Screen Iterate(Screen seed)
         {
             seed.RenderGrid();
-
-
-
             var newSeed = Tick(seed);
             return newSeed;
         }
