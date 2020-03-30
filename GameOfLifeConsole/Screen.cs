@@ -22,16 +22,28 @@ namespace GameOfLifeConsole
                 var sublist = new List<Cell>();
                 for (var j = 0; j < Width; j++)
                 {
-                    var newCell = new Cell(j, i)
-                    {
-                        isAlive = GetRandomBool()
-                    };
-
+                    var newCell = new Cell(j, i);
                     sublist.Add(newCell);
                 }
-
                 this.Generation.Add(sublist);
             }
+        }
+
+        public Screen MakeRandomSeedScreen(Screen blankScreen)
+        {
+
+            for (var i = 0; i < blankScreen.Height; i++)
+            {
+                // var sublist = new List<Cell>();
+                blankScreen.Generation.ForEach(row =>
+                {
+                    row.ForEach(cell =>
+                    {
+                        cell.isAlive = GetRandomBool();
+                    });
+                });
+            }
+            return blankScreen;
         }
 
         public bool GetRandomBool()
