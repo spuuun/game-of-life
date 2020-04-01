@@ -264,7 +264,7 @@ namespace GameOfLifeConsole
                 });
             });
             Console.WriteLine("RenderGrid from within Tick()");
-                screen.RenderGrid();
+            screen.RenderGrid();
             return screen;
         }
     }
