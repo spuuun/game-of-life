@@ -10,7 +10,6 @@ namespace GameOfLifeConsole
         public int Width { get; set; }
         public int Height { get; set; }
         public List<List<Cell>> Generation { get; set; } = new List<List<Cell>>();
-        public int LivingNeighbors { get; set; }
 
         public Screen(int x, int y)
         {
@@ -22,7 +21,7 @@ namespace GameOfLifeConsole
                 var sublist = new List<Cell>();
                 for (var j = 0; j < Width; j++)
                 {
-                    var newCell = new Cell(j, i);
+                    var newCell = new Cell(j, i); 
                     sublist.Add(newCell);
                 }
                 this.Generation.Add(sublist);
@@ -31,10 +30,8 @@ namespace GameOfLifeConsole
 
         public Screen MakeRandomSeedScreen(Screen blankScreen)
         {
-
             for (var i = 0; i < blankScreen.Height; i++)
             {
-                // var sublist = new List<Cell>();
                 blankScreen.Generation.ForEach(row =>
                 {
                     row.ForEach(cell =>
@@ -74,8 +71,8 @@ namespace GameOfLifeConsole
                 row.ForEach(cell =>
                 {
                     Console.Write($"{cell.PrintedValue}");
-                    // Console.Write($"({cell.X},{cell.Y})");
                 });
+                
                 Console.WriteLine("|");
             });
 
