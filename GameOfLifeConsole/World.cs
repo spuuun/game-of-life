@@ -31,15 +31,13 @@ namespace GameOfLifeConsole
                 });
                 Console.WriteLine("RenderGrid after cell.Tick()");
                 newScreen.RenderGrid();
-                newScreen.Generation.ForEach(row =>
-                {
-                    row.ForEach(cell =>
-                    {
-                        cell.ClearNeighbors();
-                    });
-                });
-                Console.WriteLine("RenderGrid after cell.ClearNeighbors()");
-                newScreen.RenderGrid();
+                //newScreen.Generation.ForEach(row =>
+                //{
+                //    row.ForEach(cell =>
+                //    {
+                //        cell.ClearNeighbors();
+                //    });
+                //});
             }
         }
 
