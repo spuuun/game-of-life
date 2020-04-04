@@ -17,11 +17,11 @@ namespace GameOfLifeConsole
             {
                 if (isAlive)
                 {
-                    return "X";
+                    return $"|X,{this.LivingNeighbors}";
                 }
                 else
                 {
-                    return " ";
+                    return $"| ,{this.LivingNeighbors}";
                 };
             }
         }
@@ -38,14 +38,18 @@ namespace GameOfLifeConsole
             if ((this.LivingNeighbors < 2 || this.LivingNeighbors > 3) && this.isAlive)
             {
                 this.isAlive = false;
+                this.LivingNeighbors = 0;
             }
             else if (this.LivingNeighbors == 3 && !this.isAlive)
             {
                 this.isAlive = true;
+                this.LivingNeighbors = 0;
+
             }
             else
             {
                 this.isAlive = this.isAlive;
+                this.LivingNeighbors = 0;
             }
         }
         public void ClearNeighbors()
