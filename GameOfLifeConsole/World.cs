@@ -15,12 +15,32 @@ namespace GameOfLifeConsole
         {
             History = new List<Screen>();
         }
-
-        public Screen Iterate(Screen seed)
+        public void Start(int iterations, Screen screen)
         {
-            seed.RenderGrid();
-            var newSeed = Tick(seed);
-            return newSeed;
+            screen.RenderGrid();
+            Screen newScreen = screen;
+            for (var i = 0; i < iterations; i++)
+            {
+                newScreen = Tick(newScreen);
+                newScreen.Generation.ForEach(row =>
+                {
+                    row.ForEach(cell =>
+                    {
+                        cell.Tick();
+                    });
+                });
+                Console.WriteLine("RenderGrid after cell.Tick()");
+                newScreen.RenderGrid();
+                newScreen.Generation.ForEach(row =>
+                {
+                    row.ForEach(cell =>
+                    {
+                        cell.ClearNeighbors();
+                    });
+                });
+                Console.WriteLine("RenderGrid after cell.ClearNeighbors()");
+                newScreen.RenderGrid();
+            }
         }
 
         // METHODS:
@@ -28,9 +48,6 @@ namespace GameOfLifeConsole
         {
             // add screen to history before altering it
             History.Add(screen);
-
-            Console.WriteLine("render BEFORE living neighbors eval");
-            screen.RenderGrid();
             // iterate over every cell in currentGeneration - conditionally modify cell's LivingNeighbors property
             screen.Generation.ForEach(row =>
             {
@@ -246,40 +263,8 @@ namespace GameOfLifeConsole
                     }
                 });
             });
-
-
-
-            Console.WriteLine("render AFTER living neighbors eval");
+            Console.WriteLine("RenderGrid from within Tick()");
             screen.RenderGrid();
-
-            var tickedCells = DoCellTick(screen);
-            Console.WriteLine("render AFTER calling cell.tick on each cell");
-            tickedCells.RenderGrid();
-            // var newSeed = clearAllCells(tickedCells);
-            return tickedCells;
-        }
-
-        public Screen DoCellTick(Screen screen)
-        {
-            screen.Generation.ForEach(row =>
-            {
-                row.ForEach(cell =>
-                {
-                    cell.Tick();
-                });
-            });
-            return screen;
-        }
-
-        public Screen clearAllCells(Screen screen)
-        {
-            screen.Generation.ForEach(row =>
-            {
-                row.ForEach(cell =>
-                {
-                    cell.ClearNeighbors();
-                });
-            });
             return screen;
         }
     }

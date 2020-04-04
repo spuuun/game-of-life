@@ -17,11 +17,11 @@ namespace GameOfLifeConsole
             {
                 if (isAlive)
                 {
-                    return "|X";
+                    return "X";
                 }
                 else
                 {
-                    return "|-";
+                    return " ";
                 };
             }
         }
@@ -35,13 +35,17 @@ namespace GameOfLifeConsole
 
         public void Tick()
         {
-            if (this.LivingNeighbors < 2 || this.LivingNeighbors > 3)
+            if ((this.LivingNeighbors < 2 || this.LivingNeighbors > 3) && this.isAlive)
             {
-                isAlive = false;
+                this.isAlive = false;
             }
-            else if (this.LivingNeighbors == 3 && !isAlive)
+            else if (this.LivingNeighbors == 3 && !this.isAlive)
             {
-                isAlive = true;
+                this.isAlive = true;
+            }
+            else
+            {
+                this.isAlive = this.isAlive;
             }
         }
         public void ClearNeighbors()
