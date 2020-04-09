@@ -10,7 +10,7 @@ namespace GameOfLifeConsole
         public int Width { get; set; }
         public int Height { get; set; }
         public List<List<Cell>> Generation { get; set; } = new List<List<Cell>>();
-        public int LivingNeighbors { get; set; }
+        public List<List<int>> LivingNeighbors { get; set; } = new List<List<int>>();
 
         public Screen(int x, int y)
         {
