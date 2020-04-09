@@ -26,7 +26,7 @@ namespace GameOfLifeConsole
                 {
                     row.ForEach(cell =>
                     {
-                        cell.Tick();
+                        //cell.Tick();
                     });
                 });
                 Console.WriteLine("RenderGrid after cell.Tick()");
@@ -35,7 +35,7 @@ namespace GameOfLifeConsole
                 {
                     row.ForEach(cell =>
                     {
-                        cell.ClearNeighbors();
+                        //cell.ClearNeighbors();
                     });
                 });
                 Console.WriteLine("RenderGrid after cell.ClearNeighbors()");
@@ -48,223 +48,287 @@ namespace GameOfLifeConsole
         {
             // add screen to history before altering it
             History.Add(screen);
-            // iterate over every cell in currentGeneration - conditionally modify cell's LivingNeighbors property
-            screen.Generation.ForEach(row =>
+
+            for (var j=0; j < screen.Height; j++)
             {
-                row.ForEach(cell =>
+                for (var i=0; i < screen.Width; i++)
                 {
-                    if (cell.X == 0 && cell.Y == 0)
+                    if (i == 0 || j == 0)
                     {
-                        // x corner cases
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-
-                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
+                        screen.LivingNeighbors[i][j] = screen.LivingNeighbors[i][j];
                     }
-
-                    else if (cell.X == 0 && cell.Y == screen.Height - 1)
-                    {
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    // x edgecases
-                    else if (cell.X == 0 && (cell.Y > 0 && cell.Y < screen.Height - 1))
-                    {
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    // corner cases
-                    else if (cell.X == screen.Width - 1 && cell.Y == 0)
-                    {
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    else if (cell.X == screen.Width - 1 && cell.Y == screen.Height - 1)
-                    {
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    // edge cases
-                    else if (cell.X == screen.Width - 1 && (cell.Y > 0 && cell.Y < screen.Height - 1))
-                    {
-                        //up
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        //upLeft
-                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        //left
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        //downLeft
-                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        //down
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    // remaining y edge cases
-                    else if (cell.Y == 0 && (cell.X > 0 && cell.X < screen.Width - 1))
-                    {
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-
-                    else if (cell.Y == screen.Height - 1 && (cell.X > 0 && cell.X < screen.Width - 1))
-                    {
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
-                        {
-                            cell.LivingNeighbors++;
-                        }
-                    }
-                    // REGULAR CASES
                     else
                     {
-                        if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+                        if (screen.Generation[i - 1][j - 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+                        if (screen.Generation[i][j - 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+                        if (screen.Generation[i + 1][j - 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+                        if (screen.Generation[i + 1][j].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+                        if (screen.Generation[i + 1][j + 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+                        if (screen.Generation[i][j + 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+                        if (screen.Generation[i - 1][j + 1].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
-
-                        if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+                        if (screen.Generation[i - 1][j].isAlive)
                         {
-                            cell.LivingNeighbors++;
+                            screen.LivingNeighbors[i][j]++;
                         }
                     }
-                });
-            });
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // iterate over every cell in currentGeneration - conditionally modify cell's LivingNeighbors property
+            //screen.Generation.ForEach(row =>
+            //{
+            //    row.ForEach(cell =>
+            //    {
+            //        if (cell.X == 0 && cell.Y == 0)
+            //        {
+            //            // x corner cases
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+
+            //        else if (cell.X == 0 && cell.Y == screen.Height - 1)
+            //        {
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        // x edgecases
+            //        else if (cell.X == 0 && (cell.Y > 0 && cell.Y < screen.Height - 1))
+            //        {
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        // corner cases
+            //        else if (cell.X == screen.Width - 1 && cell.Y == 0)
+            //        {
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        else if (cell.X == screen.Width - 1 && cell.Y == screen.Height - 1)
+            //        {
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        // edge cases
+            //        else if (cell.X == screen.Width - 1 && (cell.Y > 0 && cell.Y < screen.Height - 1))
+            //        {
+            //            //up
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            //upLeft
+            //            if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            //left
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            //downLeft
+            //            if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            //down
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        // remaining y edge cases
+            //        else if (cell.Y == 0 && (cell.X > 0 && cell.X < screen.Width - 1))
+            //        {
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+
+            //        else if (cell.Y == screen.Height - 1 && (cell.X > 0 && cell.X < screen.Width - 1))
+            //        {
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //        // REGULAR CASES
+            //        else
+            //        {
+            //            if (screen.Generation[cell.X][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X + 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X + 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X + 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X - 1][cell.Y + 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X - 1][cell.Y].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+
+            //            if (screen.Generation[cell.X - 1][cell.Y - 1].isAlive)
+            //            {
+            //                cell.LivingNeighbors++;
+            //            }
+            //        }
+            //    });
+            //});
             Console.WriteLine("RenderGrid from within Tick()");
             screen.RenderGrid();
+            Console.Write(screen.LivingNeighbors);
             return screen;
         }
     }
