@@ -18,6 +18,8 @@ namespace GameOfLifeConsole
         public void Start(int iterations, Screen screen)
         {
             screen.RenderGrid();
+            screen.RenderLivingNeighbors();
+            
             Screen newScreen = screen;
             for (var i = 0; i < iterations; i++)
             {
@@ -53,7 +55,7 @@ namespace GameOfLifeConsole
             {
                 for (var i=0; i < screen.Width; i++)
                 {
-                    if (i == 0 || j == 0)
+                    if (i == 0 || j == 0 || i == screen.Width - 1 || j == screen.Height - 1)
                     {
                         screen.LivingNeighbors[i][j] = screen.LivingNeighbors[i][j];
                     }

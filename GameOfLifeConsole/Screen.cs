@@ -19,13 +19,16 @@ namespace GameOfLifeConsole
 
             for (var i = 0; i < Height; i++)
             {
+                var neighborsList = new List<int>();
                 var sublist = new List<Cell>();
                 for (var j = 0; j < Width; j++)
                 {
                     var newCell = new Cell(j, i);
+                    neighborsList.Add(0);
                     sublist.Add(newCell);
                 }
                 this.Generation.Add(sublist);
+                this.LivingNeighbors.Add(neighborsList);
             }
         }
 
@@ -80,6 +83,19 @@ namespace GameOfLifeConsole
             });
 
             Console.WriteLine(bars);
+        }
+        public void RenderLivingNeighbors()
+        {
+            string bars = new String('-', this.Width * 2);
+            Console.WriteLine(bars);
+            this.LivingNeighbors.ForEach(row =>
+            {
+                row.ForEach(livingNeighborsCount =>
+                {
+                    Console.Write(livingNeighborsCount);
+                });
+                Console.WriteLine("|");
+            });
         }
 
     }
